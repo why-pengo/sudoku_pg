@@ -86,3 +86,4 @@ function boardClicked(e) {
     let tile = e.target.id;
     console.log(`tile clicked = ${tile}`);
 }
+
