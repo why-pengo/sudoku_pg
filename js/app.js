@@ -6,7 +6,15 @@ function GameState() {
 }
 const gameState = new GameState();
 
-let puzzle = sudoku.generate();
+let puzzle = sudoku.generate('medium');
+let puzzle_answer = sudoku.solve(puzzle);
+
+if (puzzle_answer) {
+    console.log(`The puzzle good.`);
+} else {
+    console.log(`The puzzle is not good.`);
+}
+
 const rows = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'];
 const grid1 = ['a1', 'b1', 'c1', 'a2', 'b2', 'c2', 'a3', 'b3', 'c3'];
 const grid2 = ['a4', 'b4', 'c4', 'a5', 'b5', 'c5', 'a6', 'b6', 'c6'];
@@ -34,18 +42,19 @@ for ( let i = 0; i < rowE.length; i++) {
 
 function drawBoard() {
     for (let i in rows) {
+        // console.log(`i = ${i}, rows[i] = ${rows[i]}`);
         const div = document.createElement('div');
         div.className = 'row';
         div.innerHTML = `
-            <div class="square r${rows[i]} c1" id="${rows[i]}1">${rows[i]}1</div>
-            <div class="square r${rows[i]} c2" id="${rows[i]}2">${rows[i]}2</div>
-            <div class="square r${rows[i]} c3" id="${rows[i]}3">${rows[i]}3</div>
-            <div class="square r${rows[i]} c4" id="${rows[i]}4">${rows[i]}4</div>
-            <div class="square r${rows[i]} c5" id="${rows[i]}5">${rows[i]}5</div>
-            <div class="square r${rows[i]} c6" id="${rows[i]}6">${rows[i]}6</div>
-            <div class="square r${rows[i]} c7" id="${rows[i]}7">${rows[i]}7</div>
-            <div class="square r${rows[i]} c8" id="${rows[i]}8">${rows[i]}8</div>
-            <div class="square r${rows[i]} c9" id="${rows[i]}9">${rows[i]}9</div>
+            <div class="square r${rows[i]} c1" id="${rows[i]}1"><p class="sq_title">${rows[i]}1</p></div>
+            <div class="square r${rows[i]} c2" id="${rows[i]}2"><p class="sq_title">${rows[i]}2</p></div>
+            <div class="square r${rows[i]} c3" id="${rows[i]}3"><p class="sq_title">${rows[i]}3</p></div>
+            <div class="square r${rows[i]} c4" id="${rows[i]}4"><p class="sq_title">${rows[i]}4</p></div>
+            <div class="square r${rows[i]} c5" id="${rows[i]}5"><p class="sq_title">${rows[i]}5</p></div>
+            <div class="square r${rows[i]} c6" id="${rows[i]}6"><p class="sq_title">${rows[i]}6</p></div>
+            <div class="square r${rows[i]} c7" id="${rows[i]}7"><p class="sq_title">${rows[i]}7</p></div>
+            <div class="square r${rows[i]} c8" id="${rows[i]}8"><p class="sq_title">${rows[i]}8</p></div>
+            <div class="square r${rows[i]} c9" id="${rows[i]}9"><p class="sq_title">${rows[i]}9</p></div>
         `;
         board.appendChild(div);
     }
@@ -87,3 +96,12 @@ function boardClicked(e) {
     console.log(`tile clicked = ${tile}`);
 }
 
+for (let k in puzzle) {
+    if (puzzle.hasOwnProperty(k)){
+        // console.log(`checking ${k}:${puzzle[k]}`);
+        if (puzzle[k] !== '.') {
+            let curr_sq = document.getElementById(k.toLowerCase());
+            curr_sq.innerHTML += `<div class="sq_value">${puzzle[k]}</div>`;
+        }
+    }
+}
