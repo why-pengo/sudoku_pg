@@ -29,16 +29,17 @@ const board = document.getElementById('board');
 
 drawBoard();
 
-const col3 = document.getElementsByClassName('c3')
-for ( let i = 0; i < col3.length; i++) {
-    col3[i].classList.remove('grid-dark');  // if it's there
-    col3[i].classList.add('selected');
-}
-const rowE = document.getElementsByClassName('re')
-for ( let i = 0; i < rowE.length; i++) {
-    rowE[i].classList.remove('grid-dark');  // if it's there
-    rowE[i].classList.add('selected');
-}
+// Selected
+// const col3 = document.getElementsByClassName('c3')
+// for ( let i = 0; i < col3.length; i++) {
+//     col3[i].classList.remove('grid-dark');  // if it's there
+//     col3[i].classList.add('selected');
+// }
+// const rowE = document.getElementsByClassName('re')
+// for ( let i = 0; i < rowE.length; i++) {
+//     rowE[i].classList.remove('grid-dark');  // if it's there
+//     rowE[i].classList.add('selected');
+// }
 
 function drawBoard() {
     for (let i in rows) {
@@ -105,3 +106,19 @@ for (let k in puzzle) {
         }
     }
 }
+
+const show_sq_id_cb = document.getElementById('show_sq_id');
+show_sq_id_cb.addEventListener("change", showSqIdClicked);
+
+function showSqIdClicked() {
+    console.log(`show_sq_id_cb.checked = ${show_sq_id_cb.checked}`);
+    if (show_sq_id_cb.checked) {
+        for (let el of document.querySelectorAll('.sq_title')) el.style.visibility = 'visible';
+    } else {
+        for (let el of document.querySelectorAll('.sq_title')) el.style.visibility = 'hidden';
+    }
+}
+
+showSqIdClicked();
+
+
