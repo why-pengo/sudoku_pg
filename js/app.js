@@ -6,6 +6,7 @@ function GameState() {
 }
 
 function log(msg) {
+    msg = msg + '\n';
     const logArea = document.getElementById('log');
     console.log(msg);
     logArea.append(msg);
@@ -47,19 +48,17 @@ const board = document.getElementById('board');
 
 drawBoard();
 
-highlightRowAndColumn();
+highlightRowAndColumn('RE', 'C3');
 
-function highlightRowAndColumn() {
-// Selected
-    const col3 = document.getElementsByClassName('C3')
+function highlightRowAndColumn(row, column) {
+    log(`highlighting row = ${row}, column = ${column}`);
+    const col3 = document.getElementsByClassName(column)
     for (let i = 0; i < col3.length; i++) {
-        log(`highlighting = ${col3[i]}`);
         col3[i].classList.remove('grid-dark');  // if it's there
         col3[i].classList.add('selected');
     }
-    const rowE = document.getElementsByClassName('RE')
+    const rowE = document.getElementsByClassName(row)
     for (let i = 0; i < rowE.length; i++) {
-        log(`highlighting = ${rowE[i]}`);
         rowE[i].classList.remove('grid-dark');  // if it's there
         rowE[i].classList.add('selected');
     }
@@ -69,7 +68,7 @@ function drawBoard() {
     for (let i in rows) {
         // console.log(`i = ${i}, rows[i] = ${rows[i]}`);
         const div = document.createElement('div');
-        div.className = 'row';
+        div.className = 'row justify-content-end';
         div.innerHTML = `
             <div class="square R${rows[i]} C1" id="${rows[i]}1"><p class="sq_title">${rows[i]}1</p></div>
             <div class="square R${rows[i]} C2" id="${rows[i]}2"><p class="sq_title">${rows[i]}2</p></div>
@@ -152,7 +151,6 @@ for (let k in squares) {
         let curr_sq = document.getElementById(sq_id);
         curr_sq.innerHTML += `<div class="sq_value" id="sq_value_${sq_id}">${puzzle[sq_id]}</div>`;
     } else {
-        log(`Does not have key`);
         let curr_sq = document.getElementById(sq_id);
         curr_sq.innerHTML += `<div class="sq_value" id="sq_value_${sq_id}"></div>`;
     }
