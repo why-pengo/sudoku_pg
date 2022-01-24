@@ -4,22 +4,32 @@ function GameState() {
     this.wasNumberClicked = false;
     this.numberClicked = '0';
 }
+
+function log(msg) {
+    const logArea = document.getElementById('log');
+    console.log(msg);
+    logArea.append(msg);
+}
+
 const gameState = new GameState();
 
 let puzzle = sudoku.generate('medium');
-console.log(`puzzle = ${JSON.stringify(puzzle)}`);
+// console.log(`puzzle = ${JSON.stringify(puzzle)}`);
+log(`puzzle = ${JSON.stringify(puzzle)}`);
 let puzzle_answer = sudoku.solve(puzzle);
-console.log(`puzzle_answer = ${JSON.stringify(puzzle_answer)}`);
-let  user_puzzle = {};
-console.log(`typeof puzzle_answer = ${typeof puzzle_answer}`);
+// console.log(`puzzle_answer = ${JSON.stringify(puzzle_answer)}`);
+log(`puzzle_answer = ${JSON.stringify(puzzle_answer)}`);
+let user_puzzle = {};
+// console.log(`typeof puzzle_answer = ${typeof puzzle_answer}`);
+log(`typeof puzzle_answer = ${typeof puzzle_answer}`);
 for (let square in puzzle) {
-     user_puzzle[square] = puzzle[square];
+    user_puzzle[square] = puzzle[square];
 }
 
 if (puzzle_answer) {
-    console.log(`The puzzle good.`);
+    log(`The puzzle good.`);
 } else {
-    console.log(`The puzzle is not good.`);
+    log(`The puzzle is not good.`);
 }
 
 const rows = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
@@ -37,17 +47,23 @@ const board = document.getElementById('board');
 
 drawBoard();
 
+highlightRowAndColumn();
+
+function highlightRowAndColumn() {
 // Selected
-// const col3 = document.getElementsByClassName('c3')
-// for ( let i = 0; i < col3.length; i++) {
-//     col3[i].classList.remove('grid-dark');  // if it's there
-//     col3[i].classList.add('selected');
-// }
-// const rowE = document.getElementsByClassName('re')
-// for ( let i = 0; i < rowE.length; i++) {
-//     rowE[i].classList.remove('grid-dark');  // if it's there
-//     rowE[i].classList.add('selected');
-// }
+    const col3 = document.getElementsByClassName('C3')
+    for (let i = 0; i < col3.length; i++) {
+        log(`highlighting = ${col3[i]}`);
+        col3[i].classList.remove('grid-dark');  // if it's there
+        col3[i].classList.add('selected');
+    }
+    const rowE = document.getElementsByClassName('RE')
+    for (let i = 0; i < rowE.length; i++) {
+        log(`highlighting = ${rowE[i]}`);
+        rowE[i].classList.remove('grid-dark');  // if it's there
+        rowE[i].classList.add('selected');
+    }
+}
 
 function drawBoard() {
     for (let i in rows) {
@@ -84,9 +100,10 @@ function gridDarkBg(gridList) {
 
 const numbersRow = document.getElementById('numbers');
 numbersRow.addEventListener("click", numberClicked);
+
 function numberClicked(e) {
     let n = e.target.id.replace('N', '');
-    console.log(`n = ${n}`);
+    // console.log(`n = ${n}`);
     if (gameState.wasNumberClicked === true) {
         gameState.wasNumberClicked = false;
         gameState.numberClicked = '0';
@@ -99,23 +116,24 @@ function numberClicked(e) {
 }
 
 board.addEventListener('click', boardClicked);
+
 function boardClicked(e) {
     let sq = e.target.id;
-    console.log(`sq clicked = ${sq}`);
+    // console.log(`sq clicked = ${sq}`);
     if (gameState.wasNumberClicked) {
         update_puzzle(sq);
     }
 }
 
 function update_puzzle(sq) {
-    console.log(`sq = ${sq}, numberClicked = ${gameState.numberClicked}`);
+    // console.log(`sq = ${sq}, numberClicked = ${gameState.numberClicked}`);
     if (user_puzzle.hasOwnProperty(sq)) {
-        console.log(`user_puzzle[sq] = ${user_puzzle[sq]}`);
+        // console.log(`user_puzzle[sq] = ${user_puzzle[sq]}`);
     }
     user_puzzle[sq] = gameState.numberClicked;
-    console.log(`user_puzzle[sq] = ${user_puzzle[sq]}`);
-    let hint = sudoku.getHint(puzzle,  user_puzzle);
-    console.log(`hint returned = ${JSON.stringify(hint)}`);
+    log(`user_puzzle[sq] = ${user_puzzle[sq]}`);
+    let hint = sudoku.getHint(puzzle, user_puzzle);
+    log(`hint returned = ${JSON.stringify(hint)}`);
     if (hint.type === 'error') {
         alert(`Error: incorrect.`);
     } else {
@@ -127,14 +145,14 @@ function update_puzzle(sq) {
 // for (let k in puzzle) {
 for (let k in squares) {
     let sq_id = squares[k];
-    console.log(`sq_id = ${sq_id}`);
-    console.log(`squares[${k}] = ${squares[k]}`);
-    console.log(`puzzle[${sq_id}] = ${puzzle[sq_id]}`);
-    if (puzzle.hasOwnProperty(sq_id)){
+    // console.log(`sq_id = ${sq_id}`);
+    // console.log(`squares[${k}] = ${squares[k]}`);
+    // console.log(`puzzle[${sq_id}] = ${puzzle[sq_id]}`);
+    if (puzzle.hasOwnProperty(sq_id)) {
         let curr_sq = document.getElementById(sq_id);
         curr_sq.innerHTML += `<div class="sq_value" id="sq_value_${sq_id}">${puzzle[sq_id]}</div>`;
     } else {
-        console.log(`Does not have key`);
+        log(`Does not have key`);
         let curr_sq = document.getElementById(sq_id);
         curr_sq.innerHTML += `<div class="sq_value" id="sq_value_${sq_id}"></div>`;
     }
@@ -144,7 +162,7 @@ const show_sq_id_cb = document.getElementById('show_sq_id');
 show_sq_id_cb.addEventListener("change", showSqIdClicked);
 
 function showSqIdClicked() {
-    console.log(`show_sq_id_cb.checked = ${show_sq_id_cb.checked}`);
+    // console.log(`show_sq_id_cb.checked = ${show_sq_id_cb.checked}`);
     if (show_sq_id_cb.checked) {
         for (let el of document.querySelectorAll('.sq_title')) el.style.visibility = 'visible';
     } else {
