@@ -1,15 +1,18 @@
 "use strict";
 
+
 function GameState() {
     this.wasNumberClicked = false;
     this.numberClicked = '0';
+    this.hlRow = '0';
+    this.hlColumn = '0';
 }
 
 function log(msg) {
     msg = msg + '\n';
-    const logArea = document.getElementById('log');
+    // const logArea = document.getElementById('log');
     console.log(msg);
-    logArea.append(msg);
+    // logArea.append(msg);
 }
 
 const gameState = new GameState();
@@ -48,10 +51,10 @@ const board = document.getElementById('board');
 
 drawBoard();
 
-highlightRowAndColumn('RE', 'C3');
-
 function highlightRowAndColumn(row, column) {
     log(`highlighting row = ${row}, column = ${column}`);
+    gameState.hlRow = row;
+    gameState.hlColumn = column;
     const col3 = document.getElementsByClassName(column)
     for (let i = 0; i < col3.length; i++) {
         col3[i].classList.remove('grid-dark');  // if it's there
@@ -61,6 +64,20 @@ function highlightRowAndColumn(row, column) {
     for (let i = 0; i < rowE.length; i++) {
         rowE[i].classList.remove('grid-dark');  // if it's there
         rowE[i].classList.add('selected');
+    }
+}
+
+function unHighlightRowAndColumn(row, column) {
+    log(`unhighlighting row = ${row}, column = ${column}`);
+    const col = document.getElementsByClassName(column)
+    for (let i = 0; i < col.length; i++) {
+        col[i].classList.remove('selected');
+        // col[i].classList.add('selected');
+    }
+    const r = document.getElementsByClassName(row)
+    for (let i = 0; i < r.length; i++) {
+        r[i].classList.remove('selected');
+        // r[i].classList.add('selected');
     }
 }
 
@@ -82,6 +99,10 @@ function drawBoard() {
         `;
         board.appendChild(div);
     }
+    setGridDarkBg();
+}
+
+function setGridDarkBg() {
     gridDarkBg(grid1);
     gridDarkBg(grid3);
     gridDarkBg(grid5);
@@ -117,15 +138,40 @@ function numberClicked(e) {
 board.addEventListener('click', boardClicked);
 
 function boardClicked(e) {
-    let sq = e.target.id;
-    // console.log(`sq clicked = ${sq}`);
+    const target_id = e.target.id;
+    let sq;
+    console.log(`target_id clicked = ${target_id}`);
+    if (target_id.startsWith('sq_value_')) {
+        sq = target_id.replace('sq_value_', '');
+    } else {
+        sq = target_id;
+    }
+    console.log(`sq clicked = ${sq}`);
     if (gameState.wasNumberClicked) {
         update_puzzle(sq);
+    } else {
+        if (sqHasValue(sq)) {
+            const classes = String(document.getElementById(sq).classList);
+            const buf = classes.split(' ');
+            const r = buf[1];
+            const c = buf[2];
+            log(`classes = ${classes}, buf = ${buf}, r = ${r}, c = ${c}`);
+            if (gameState.hlRow !== '0') {
+                unHighlightRowAndColumn(gameState.hlRow, gameState.hlColumn);
+                setGridDarkBg();
+            }
+            highlightRowAndColumn(r, c);
+        }
     }
 }
 
+function sqHasValue(sq) {
+    // TODO: find value of sq
+    return true
+}
+
 function update_puzzle(sq) {
-    // console.log(`sq = ${sq}, numberClicked = ${gameState.numberClicked}`);
+    console.log(`sq = ${sq}, numberClicked = ${gameState.numberClicked}`);
     if (user_puzzle.hasOwnProperty(sq)) {
         // console.log(`user_puzzle[sq] = ${user_puzzle[sq]}`);
     }
