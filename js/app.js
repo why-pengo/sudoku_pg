@@ -46,7 +46,7 @@ const grid6 = ['D7', 'E7', 'F7', 'D8', 'E8', 'F8', 'D9', 'E9', 'F9'];
 const grid7 = ['G1', 'H1', 'I1', 'G2', 'H2', 'I2', 'G3', 'H3', 'I3'];
 const grid8 = ['G4', 'H4', 'I4', 'G5', 'H5', 'I5', 'G6', 'H6', 'I6'];
 const grid9 = ['G7', 'H7', 'I7', 'G8', 'H8', 'I8', 'G9', 'H9', 'I9'];
-const squares = grid1.concat(grid2, grid3, grid4, grid5, grid6, grid8, grid9);
+const squares = grid1.concat(grid1, grid2, grid3, grid4, grid5, grid6, grid7, grid8, grid9);
 const board = document.getElementById('board');
 
 drawBoard();
@@ -83,7 +83,7 @@ function unHighlightRowAndColumn(row, column) {
 
 function drawBoard() {
     for (let i in rows) {
-        // console.log(`i = ${i}, rows[i] = ${rows[i]}`);
+        console.log(`i = ${i}, rows[i] = ${rows[i]}`);
         const div = document.createElement('div');
         div.className = 'row justify-content-end';
         div.innerHTML = `
@@ -177,9 +177,11 @@ function update_puzzle(sq) {
     }
     user_puzzle[sq] = gameState.numberClicked;
     log(`user_puzzle[sq] = ${user_puzzle[sq]}`);
-    let hint = sudoku.getHint(puzzle, user_puzzle);
-    log(`hint returned = ${JSON.stringify(hint)}`);
-    if (hint.type === 'error') {
+    log(`puzzle_answer[sq] = ${puzzle_answer[sq]}`);
+    // // let hint = sudoku.getHint(puzzle, user_puzzle);
+    // log(`hint returned = ${JSON.stringify(hint)}`);
+    // if (hint.type === 'error') {
+    if (user_puzzle[sq] !== puzzle_answer[sq]) {
         alert(`Error: incorrect.`);
     } else {
         let selected_sq_value = document.getElementById(`sq_value_${sq}`);
