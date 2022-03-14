@@ -46,7 +46,7 @@ const grid6 = ['D7', 'E7', 'F7', 'D8', 'E8', 'F8', 'D9', 'E9', 'F9'];
 const grid7 = ['G1', 'H1', 'I1', 'G2', 'H2', 'I2', 'G3', 'H3', 'I3'];
 const grid8 = ['G4', 'H4', 'I4', 'G5', 'H5', 'I5', 'G6', 'H6', 'I6'];
 const grid9 = ['G7', 'H7', 'I7', 'G8', 'H8', 'I8', 'G9', 'H9', 'I9'];
-const squares = grid1.concat(grid1, grid2, grid3, grid4, grid5, grid6, grid7, grid8, grid9);
+const squares = grid1.concat(grid2, grid3, grid4, grid5, grid6, grid7, grid8, grid9);
 const board = document.getElementById('board');
 
 drawBoard();
@@ -184,23 +184,19 @@ function update_puzzle(sq) {
     if (user_puzzle[sq] !== puzzle_answer[sq]) {
         alert(`Error: incorrect.`);
     } else {
-        let selected_sq_value = document.getElementById(`sq_value_${sq}`);
-        selected_sq_value.innerText = gameState.numberClicked;
+        let selected_sq = document.getElementById(sq);
+        selected_sq.innerHTML += `<div class="sq_value" id="sq_value_${sq}">${user_puzzle[sq]}</div>`;
     }
 }
 
-// for (let k in puzzle) {
 for (let k in squares) {
     let sq_id = squares[k];
     // console.log(`sq_id = ${sq_id}`);
-    // console.log(`squares[${k}] = ${squares[k]}`);
+    console.log(`squares[${k}] = ${squares[k]}`);
     // console.log(`puzzle[${sq_id}] = ${puzzle[sq_id]}`);
     if (puzzle.hasOwnProperty(sq_id)) {
         let curr_sq = document.getElementById(sq_id);
         curr_sq.innerHTML += `<div class="sq_value" id="sq_value_${sq_id}">${puzzle[sq_id]}</div>`;
-    } else {
-        let curr_sq = document.getElementById(sq_id);
-        curr_sq.innerHTML += `<div class="sq_value" id="sq_value_${sq_id}"></div>`;
     }
 }
 
