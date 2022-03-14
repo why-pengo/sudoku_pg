@@ -55,15 +55,15 @@ function highlightRowAndColumn(row, column) {
     log(`highlighting row = ${row}, column = ${column}`);
     gameState.hlRow = row;
     gameState.hlColumn = column;
-    const col3 = document.getElementsByClassName(column)
-    for (let i = 0; i < col3.length; i++) {
-        col3[i].classList.remove('grid-dark');  // if it's there
-        col3[i].classList.add('selected');
+    const col = document.getElementsByClassName(column)
+    for (let i = 0; i < col.length; i++) {
+        col[i].classList.remove('grid-dark');  // if it's there
+        col[i].classList.add('selected');
     }
-    const rowE = document.getElementsByClassName(row)
-    for (let i = 0; i < rowE.length; i++) {
-        rowE[i].classList.remove('grid-dark');  // if it's there
-        rowE[i].classList.add('selected');
+    const rw = document.getElementsByClassName(row)
+    for (let i = 0; i < rw.length; i++) {
+        rw[i].classList.remove('grid-dark');  // if it's there
+        rw[i].classList.add('selected');
     }
 }
 
@@ -78,6 +78,20 @@ function unHighlightRowAndColumn(row, column) {
     for (let i = 0; i < r.length; i++) {
         r[i].classList.remove('selected');
         // r[i].classList.add('selected');
+    }
+}
+
+function highlightSquareByValue(value) {
+    for (let k in squares) {
+        let sq_id = squares[k];
+        console.log(`sq_id = ${sq_id}`);
+        console.log(`user_puzzle.value = ${user_puzzle[sq_id]}`);
+        console.log(`value = ${value}`);
+        if (value === user_puzzle[sq_id]) {
+            let sqById = document.getElementById(sq_id);
+            sqById.classList.remove('grid-dark');  // if it's there
+            sqById.classList.add('selected');
+        }
     }
 }
 
@@ -161,6 +175,7 @@ function boardClicked(e) {
                 setGridDarkBg();
             }
             highlightRowAndColumn(r, c);
+            highlightSquareByValue(user_puzzle[sq]);
         }
     }
 }
