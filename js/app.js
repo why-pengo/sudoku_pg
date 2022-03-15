@@ -84,20 +84,32 @@ function unHighlightRowAndColumn(row, column) {
 function highlightSquareByValue(value) {
     for (let k in squares) {
         let sq_id = squares[k];
-        console.log(`sq_id = ${sq_id}`);
-        console.log(`user_puzzle.value = ${user_puzzle[sq_id]}`);
-        console.log(`value = ${value}`);
+        // console.log(`sq_id = ${sq_id}`);
+        // console.log(`user_puzzle.value = ${user_puzzle[sq_id]}`);
+        // console.log(`value = ${value}`);
         if (value === user_puzzle[sq_id]) {
             let sqById = document.getElementById(sq_id);
             sqById.classList.remove('grid-dark');  // if it's there
-            sqById.classList.add('selected');
+            sqById.classList.add('selected-red');
         }
+    }
+}
+
+function unHighlightSquareByValue(value) {
+    for (let k in squares) {
+        let sq_id = squares[k];
+        // console.log(`sq_id = ${sq_id}`);
+        // console.log(`user_puzzle.value = ${user_puzzle[sq_id]}`);
+        // console.log(`value = ${value}`);
+        let sqById = document.getElementById(sq_id);
+        sqById.classList.remove('grid-dark');  // if it's there
+        sqById.classList.remove('selected-red');
     }
 }
 
 function drawBoard() {
     for (let i in rows) {
-        console.log(`i = ${i}, rows[i] = ${rows[i]}`);
+        // console.log(`i = ${i}, rows[i] = ${rows[i]}`);
         const div = document.createElement('div');
         div.className = 'row justify-content-end';
         div.innerHTML = `
@@ -172,6 +184,7 @@ function boardClicked(e) {
             log(`classes = ${classes}, buf = ${buf}, r = ${r}, c = ${c}`);
             if (gameState.hlRow !== '0') {
                 unHighlightRowAndColumn(gameState.hlRow, gameState.hlColumn);
+                unHighlightSquareByValue(user_puzzle[sq]);
                 setGridDarkBg();
             }
             highlightRowAndColumn(r, c);
@@ -181,8 +194,9 @@ function boardClicked(e) {
 }
 
 function sqHasValue(sq) {
-    // TODO: find value of sq
-    return true
+    let fn = sqHasValue.name;
+    log(`${fn}: user_puzzle[${sq}] = ${user_puzzle[sq]}`)
+    return user_puzzle[sq];
 }
 
 function update_puzzle(sq) {
@@ -207,7 +221,7 @@ function update_puzzle(sq) {
 for (let k in squares) {
     let sq_id = squares[k];
     // console.log(`sq_id = ${sq_id}`);
-    console.log(`squares[${k}] = ${squares[k]}`);
+    // console.log(`squares[${k}] = ${squares[k]}`);
     // console.log(`puzzle[${sq_id}] = ${puzzle[sq_id]}`);
     if (puzzle.hasOwnProperty(sq_id)) {
         let curr_sq = document.getElementById(sq_id);
