@@ -6,34 +6,30 @@ function GameState() {
     this.numberClicked = '0';
     this.hlRow = '0';
     this.hlColumn = '0';
-}
-
-function log(msg) {
-    msg = msg + '\n';
-    // const logArea = document.getElementById('log');
-    console.log(msg);
-    // logArea.append(msg);
+    // TODO: implement modes
+    this.commandMode = true;   // command mode: highlighting, etc
+    this.writeMode = false;    // filling squares in pencil or pen mode
+    this.pencilMode = true;
+    this.penMode = true;
 }
 
 const gameState = new GameState();
 
+// initialize our game
 let puzzle = sudoku.generate('medium');
-// console.log(`puzzle = ${JSON.stringify(puzzle)}`);
-log(`puzzle = ${JSON.stringify(puzzle)}`);
+console.log(`puzzle = ${JSON.stringify(puzzle)}`);
 let puzzle_answer = sudoku.solve(puzzle);
-// console.log(`puzzle_answer = ${JSON.stringify(puzzle_answer)}`);
-log(`puzzle_answer = ${JSON.stringify(puzzle_answer)}`);
+console.log(`puzzle_answer = ${JSON.stringify(puzzle_answer)}`);
 let user_puzzle = {};
-// console.log(`typeof puzzle_answer = ${typeof puzzle_answer}`);
-log(`typeof puzzle_answer = ${typeof puzzle_answer}`);
+console.log(`typeof puzzle_answer = ${typeof puzzle_answer}`);
 for (let square in puzzle) {
     user_puzzle[square] = puzzle[square];
 }
 
 if (puzzle_answer) {
-    log(`The puzzle good.`);
+    console.log(`The puzzle good.`);
 } else {
-    log(`The puzzle is not good.`);
+    console.log(`The puzzle is not good.`);
 }
 
 const rows = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
@@ -52,7 +48,7 @@ const board = document.getElementById('board');
 drawBoard();
 
 function highlightRowAndColumn(row, column) {
-    log(`highlighting row = ${row}, column = ${column}`);
+    console.log(`highlighting row = ${row}, column = ${column}`);
     gameState.hlRow = row;
     gameState.hlColumn = column;
     const col = document.getElementsByClassName(column)
@@ -68,7 +64,7 @@ function highlightRowAndColumn(row, column) {
 }
 
 function unHighlightRowAndColumn(row, column) {
-    log(`unhighlighting row = ${row}, column = ${column}`);
+    console.log(`unhighlighting row = ${row}, column = ${column}`);
     const col = document.getElementsByClassName(column)
     for (let i = 0; i < col.length; i++) {
         col[i].classList.remove('selected');
@@ -181,7 +177,7 @@ function boardClicked(e) {
             const buf = classes.split(' ');
             const r = buf[1];
             const c = buf[2];
-            log(`classes = ${classes}, buf = ${buf}, r = ${r}, c = ${c}`);
+            console.log(`classes = ${classes}, buf = ${buf}, r = ${r}, c = ${c}`);
             if (gameState.hlRow !== '0') {
                 unHighlightRowAndColumn(gameState.hlRow, gameState.hlColumn);
                 unHighlightSquareByValue(user_puzzle[sq]);
@@ -195,24 +191,18 @@ function boardClicked(e) {
 
 function sqHasValue(sq) {
     let fn = sqHasValue.name;
-    log(`${fn}: user_puzzle[${sq}] = ${user_puzzle[sq]}`)
+    console.log(`${fn}: user_puzzle[${sq}] = ${user_puzzle[sq]}`)
     return user_puzzle[sq];
 }
 
 function update_puzzle(sq) {
     console.log(`sq = ${sq}, numberClicked = ${gameState.numberClicked}`);
-    if (user_puzzle.hasOwnProperty(sq)) {
-        // console.log(`user_puzzle[sq] = ${user_puzzle[sq]}`);
-    }
-    user_puzzle[sq] = gameState.numberClicked;
-    log(`user_puzzle[sq] = ${user_puzzle[sq]}`);
-    log(`puzzle_answer[sq] = ${puzzle_answer[sq]}`);
-    // // let hint = sudoku.getHint(puzzle, user_puzzle);
-    // log(`hint returned = ${JSON.stringify(hint)}`);
-    // if (hint.type === 'error') {
+    console.log(`user_puzzle[sq] = ${user_puzzle[sq]}`);
+    console.log(`puzzle_answer[sq] = ${puzzle_answer[sq]}`);
     if (user_puzzle[sq] !== puzzle_answer[sq]) {
         alert(`Error: incorrect.`);
     } else {
+        user_puzzle[sq] = gameState.numberClicked;
         let selected_sq = document.getElementById(sq);
         selected_sq.innerHTML += `<div class="sq_value" id="sq_value_${sq}">${user_puzzle[sq]}</div>`;
     }
@@ -220,9 +210,6 @@ function update_puzzle(sq) {
 
 for (let k in squares) {
     let sq_id = squares[k];
-    // console.log(`sq_id = ${sq_id}`);
-    // console.log(`squares[${k}] = ${squares[k]}`);
-    // console.log(`puzzle[${sq_id}] = ${puzzle[sq_id]}`);
     if (puzzle.hasOwnProperty(sq_id)) {
         let curr_sq = document.getElementById(sq_id);
         curr_sq.innerHTML += `<div class="sq_value" id="sq_value_${sq_id}">${puzzle[sq_id]}</div>`;
@@ -233,7 +220,6 @@ const show_sq_id_cb = document.getElementById('show_sq_id');
 show_sq_id_cb.addEventListener("change", showSqIdClicked);
 
 function showSqIdClicked() {
-    // console.log(`show_sq_id_cb.checked = ${show_sq_id_cb.checked}`);
     if (show_sq_id_cb.checked) {
         for (let el of document.querySelectorAll('.sq_title')) el.style.visibility = 'visible';
     } else {
@@ -241,5 +227,6 @@ function showSqIdClicked() {
     }
 }
 
+// Hide them on start
 showSqIdClicked();
 
