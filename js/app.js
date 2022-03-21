@@ -1,6 +1,5 @@
 "use strict";
 
-
 function GameState() {
     this.wasNumberClicked = false;
     this.numberClicked = '0';
@@ -68,21 +67,16 @@ function unHighlightRowAndColumn(row, column) {
     const col = document.getElementsByClassName(column)
     for (let i = 0; i < col.length; i++) {
         col[i].classList.remove('selected');
-        // col[i].classList.add('selected');
     }
     const r = document.getElementsByClassName(row)
     for (let i = 0; i < r.length; i++) {
         r[i].classList.remove('selected');
-        // r[i].classList.add('selected');
     }
 }
 
 function highlightSquareByValue(value) {
     for (let k in squares) {
         let sq_id = squares[k];
-        // console.log(`sq_id = ${sq_id}`);
-        // console.log(`user_puzzle.value = ${user_puzzle[sq_id]}`);
-        // console.log(`value = ${value}`);
         if (value === user_puzzle[sq_id]) {
             let sqById = document.getElementById(sq_id);
             sqById.classList.remove('grid-dark');  // if it's there
@@ -94,9 +88,6 @@ function highlightSquareByValue(value) {
 function unHighlightSquareByValue(value) {
     for (let k in squares) {
         let sq_id = squares[k];
-        // console.log(`sq_id = ${sq_id}`);
-        // console.log(`user_puzzle.value = ${user_puzzle[sq_id]}`);
-        // console.log(`value = ${value}`);
         let sqById = document.getElementById(sq_id);
         sqById.classList.remove('grid-dark');  // if it's there
         sqById.classList.remove('selected-red');
@@ -105,7 +96,6 @@ function unHighlightSquareByValue(value) {
 
 function drawBoard() {
     for (let i in rows) {
-        // console.log(`i = ${i}, rows[i] = ${rows[i]}`);
         const div = document.createElement('div');
         div.className = 'row justify-content-end';
         div.innerHTML = `
@@ -134,7 +124,6 @@ function setGridDarkBg() {
 
 function gridDarkBg(gridList) {
     for (let i in gridList) {
-        // console.log(`gridList[i] = ${gridList[i]}`);
         let grid = document.getElementById(gridList[i]);
         grid.classList.add('grid-dark');
     }
@@ -145,7 +134,6 @@ numbersRow.addEventListener("click", numberClicked);
 
 function numberClicked(e) {
     let n = e.target.id.replace('N', '');
-    // console.log(`n = ${n}`);
     if (gameState.wasNumberClicked === true) {
         gameState.wasNumberClicked = false;
         gameState.numberClicked = '0';
@@ -227,6 +215,21 @@ function showSqIdClicked() {
     }
 }
 
-// Hide them on start
+// Do not show square ids on start
 showSqIdClicked();
 
+
+function calculateElapsedTime() {
+    // TODO: implement game timer
+    let startTime = new Date();
+    let endTime = new Date();
+    let timeDiff = endTime - startTime;
+    timeDiff /= 1000;
+    let seconds = Math.round(timeDiff % 60);
+    timeDiff = Math.floor(timeDiff / 60);
+    let minutes = Math.round(timeDiff % 60);
+    timeDiff = Math.floor(timeDiff / 60);
+    let hours = Math.round(timeDiff % 24);
+    timeDiff = Math.floor(timeDiff / 24);
+    let days = timeDiff;
+}
